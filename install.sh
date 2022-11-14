@@ -38,7 +38,14 @@ cp /var/www/html/ngnixOverwrite/default.conf /etc/nginx/conf.d/
 #Overwrite Configuration for PHP-FPM
 cp /var/www/html/phpFpmOverwrite/www.conf /etc/php/8.1/fpm/pool.d/
 
+cp /var/www/html/phpFpmOverwrite/php.ini /etc/php/8.1/fpm/
+
 #Start PHP FPM as service
 service php8.1-fpm start
 
 service nginx reload
+
+#Install composer
+
+curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+

@@ -1,4 +1,5 @@
 # Author Kapil Kumar
+# email: magentodaemon@gmail.com
 #
 # Created this docker compose file to work with Magento  
 #
@@ -8,6 +9,7 @@ version: "3.7"
 services:
     webserver:
         image: nginx
+        container_name: webserver
         ports:
             - 80:80
         working_dir: /var/www/html/
@@ -22,10 +24,13 @@ services:
             SEARCH_PORT: 1902
             Q_HOST: search
             Q_PORT: 1902
+            CACHE_HOST: cache
+            CACHE_PORT: 6379
             APPLICATION_MODE: developer
     
     db:
         image: mariadb
+        container_name: db
         volumes:
             - persistDB:/var/lib/mysql
         environment:
@@ -34,6 +39,18 @@ services:
        
     search:
         image: elasticsearch:7.17.7
+        container_name: elasticsearch
+        environment:
+            - xpack.security.enabled=false
+            - discovery.type=single-node
+
+    cache:
+        image: redis
+        container_name: cache
+
+    queue:
+        image: rabbitmq
+        container_name: rabbitmq
 
 volumes:
     persistDB:
