@@ -32,6 +32,7 @@ services:
             APPLICATION_MODE: developer
             MAGENTO_PUBLIC_KEY: <your-mage-public-key>
             MAGENTO_PRIVATE_KEY: <your-mage-private-key>
+            MAGE_ROOT: /var/www/html/
     
     db:
         image: mariadb:10.4.26

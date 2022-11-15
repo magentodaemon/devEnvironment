@@ -66,6 +66,7 @@ echo 'Overwriting configuration for nginx and phpfpm and php.ini'
 echo '===================================================================================================='
 #Overwrite Configuration for ngnix
 cp /var/www/scripts/ngnixOverwrite/default.conf /etc/nginx/conf.d/
+cp /var/www/scripts/ngnixOverwrite/magento.conf /etc/nginx/conf.d/
 #Overwrite Configuration for PHP-FPM
 cp /var/www/scripts/phpFpmOverwrite/www.conf /etc/php/8.1/fpm/pool.d/
 cp /var/www/scripts/phpFpmOverwrite/php.ini /etc/php/8.1/fpm/
@@ -165,3 +166,13 @@ echo '==========================================================================
 --amqp-user=$Q_USER \
 --amqp-password=$Q_PASS \
 --amqp-virtualhost="/"
+
+echo '===================================================================================================='
+echo 'Setting up redis for backend cache'
+echo '===================================================================================================='
+/var/www/html/bin/magento setup:config:set --cache-backend=redis --cache-backend-redis-server=cache --cache-backend-redis-db=0
+
+echo '===================================================================================================='
+echo 'Setting up redis for page cache'
+echo '===================================================================================================='
+/var/www/html/bin/magento setup:config:set --page-cache=redis --page-cache-redis-server=redis --page-cache-redis-db=1
