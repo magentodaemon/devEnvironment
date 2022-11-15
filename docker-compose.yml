@@ -12,21 +12,26 @@ services:
         container_name: webserver
         ports:
             - 80:80
-        working_dir: /var/www/html/
+        working_dir: /var/www/scripts/
         volumes:
-            - ./:/var/www/html/
+            - ./scripts:/var/www/scripts/
+            - ./magento:/var/www/html/
         environment:
             DB_HOST: db
             DB_USER: root
             DB_PASSWORD: secret
             DB_NAME: magento
             SEARCH_HOST: search
-            SEARCH_PORT: 1902
-            Q_HOST: search
-            Q_PORT: 1902
+            SEARCH_PORT: 9200
+            Q_HOST: queue
+            Q_USER: user
+            Q_PASS: pass
+            Q_PORT: 5672
             CACHE_HOST: cache
             CACHE_PORT: 6379
             APPLICATION_MODE: developer
+            MAGENTO_PUBLIC_KEY: <your-mage-public-key>
+            MAGENTO_PRIVATE_KEY: <your-mage-private-key>
     
     db:
         image: mariadb
@@ -36,6 +41,8 @@ services:
         environment:
             MARIADB_ROOT_PASSWORD: secret
             MARIADB_DB: magento
+        expose:
+            - "3306"
        
     search:
         image: elasticsearch:7.17.7
@@ -43,6 +50,8 @@ services:
         environment:
             - xpack.security.enabled=false
             - discovery.type=single-node
+        expose:
+            - "9200"
 
     cache:
         image: redis
@@ -51,6 +60,10 @@ services:
     queue:
         image: rabbitmq
         container_name: rabbitmq
+        environment:
+            RABBITMQ_DEFAULT_USER: user
+            RABBITMQ_DEFAULT_PASS: pass
+            RABBITMQ_PID_FILE: /var/lib/rabbitmq/mnesia/rabbitmq
 
 volumes:
     persistDB:
