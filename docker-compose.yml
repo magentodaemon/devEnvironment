@@ -34,7 +34,7 @@ services:
             MAGENTO_PRIVATE_KEY: <your-mage-private-key>
     
     db:
-        image: mariadb
+        image: mariadb:10.4.26
         container_name: db
         volumes:
             - persistDB:/var/lib/mysql

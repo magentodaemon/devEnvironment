@@ -133,7 +133,7 @@ chmod u+x /var/www/html/bin/magento
 echo '===================================================================================================='
 echo 'Create database for magento'
 echo '===================================================================================================='
-mysql -h db -u root -psecret -e 'create database magento;'
+mysql -h $DB_HOST -u $DB_USER -$DB_PASSWORD -e 'create database magento;'
 
 echo '===================================================================================================='
 echo 'Installing magento'
